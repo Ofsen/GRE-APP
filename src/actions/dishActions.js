@@ -6,8 +6,7 @@ export const getDishs = () => async (dispatch) => {
 	try {
 		setLoading();
 
-		// const res = await wcClient().get('dishs/');
-		const res = [{ id: 1 }, { id: 2 }];
+		const res = await wcClient().get('dishs/');
 
 		dispatch({
 			type: GET_DISHS,

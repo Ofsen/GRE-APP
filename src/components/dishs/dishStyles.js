@@ -2,21 +2,24 @@ import { StyleSheet, Dimensions } from 'react-native';
 
 export default StyleSheet.create({
 	item: {
-		width: Dimensions.get('screen').width * 0.4,
+		width: Dimensions.get('screen').width * 0.9,
 		marginBottom: 20,
 	},
-	imageContainer: {
-		backgroundColor: '#c1c1c1',
+	productContainer: {
+		backgroundColor: '#EDF2F7',
 		padding: 2,
-		borderRadius: 21,
+		borderRadius: 4,
 		height: Dimensions.get('screen').width * 0.4,
 		marginBottom: 5,
+		flexDirection: 'row',
 	},
 	productImage: {
-		width: '100%',
-		height: '100%',
+		width: 150,
+		height: 150,
 		resizeMode: 'cover',
-		borderRadius: 20,
+		backgroundColor: 'white',
+		borderRadius: 4,
+		margin: 5,
 	},
 	itemContentContainer: {
 		paddingHorizontal: 10,
@@ -46,8 +49,9 @@ export default StyleSheet.create({
 	headerTitle: {
 		paddingTop: 20,
 		marginVertical: 5,
-		fontSize: 26,
+		fontSize: 24,
 		fontWeight: 'bold',
+		color: '#E53E3E',
 	},
 	listTitle: {
 		paddingVertical: 16,
@@ -135,6 +139,7 @@ export default StyleSheet.create({
 		justifyContent: 'space-between',
 	},
 	flexOne: { flex: 1 },
+	bgWhite: { backgroundColor: '#fff' },
 	textACenter: { textAlign: 'center' },
 	detailsText: { paddingVertical: 8 },
 	flexDRow: { flexDirection: 'row' },

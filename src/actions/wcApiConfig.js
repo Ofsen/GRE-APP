@@ -2,8 +2,5 @@ import axios from 'axios';
 
 export const wcClient = () =>
 	axios.create({
-		baseURL: 'Root EndPoint',
-		headers: {
-			'Content-Type': 'application/json',
-		},
+		baseURL: 'http://192.168.1.5:5000/api/',
 	});

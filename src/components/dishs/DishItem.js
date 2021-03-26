@@ -4,61 +4,61 @@ import PropTypes from 'prop-types';
 import dishStyles from './dishStyles';
 // Components
 import { View, Text, Image, TouchableOpacity } from 'react-native';
-// Icons
-import { Entypo } from '@expo/vector-icons';
 
 const DishItem = ({ dish, navigation }) => {
-	const { name, images, price } = dish;
+	const {
+		name,
+		category,
+		price,
+		img: {
+			data: { data },
+		},
+	} = dish;
 
 	const {
 		item,
-		imageContainer,
+		productContainer,
 		productImage,
-		vendorContainer,
 		itemContentContainer,
 		productPrice,
 		productName,
-	} = productStyles;
+	} = dishStyles;
 
 	return (
-		<Text>{JSON.stringify(dish)}</Text>
-		// <TouchableOpacity
-		// 	style={item}
-		// 	onPress={() =>
-		// 		navigation.navigate('ProductSingle', {
-		// 			product: product,
-		// 			name: name.toUpperCase(),
-		// 		})
-		// 	}
-		// >
-		// 	<View style={imageContainer}>
-		// 		{images.length !== 0 && (
-		// 			<Image
-		// 				progressiveRenderingEnabled={true}
-		// 				style={productImage}
-		// 				source={{ uri: `${images[0].src}` }}
-		// 			/>
-		// 		)}
-		// 	</View>
-		// 	<View style={vendorContainer}>
-		// 		<Entypo
-		// 			style={{ paddingEnd: 5 }}
-		// 			name='shop'
-		// 			size={16}
-		// 			color='#c1c1c1'
-		// 		/>
-		// 		<Text>{shop_name}</Text>
-		// 	</View>
-		// 	<View style={itemContentContainer}>
-		// 		<Text style={productPrice}>{price + ' ' + currency_code}</Text>
-		// 		<Text style={productName}>{name}</Text>
-		// 	</View>
-		// </TouchableOpacity>
+		<TouchableOpacity
+			style={item}
+			onPress={() =>
+				navigation.navigate('DishSingle', {
+					dish: dish,
+					name: name.toUpperCase(),
+				})
+			}
+		>
+			<View style={productContainer}>
+				<View style={productImage}>
+					<Text>img here</Text>
+				</View>
+				{/* <Image
+					progressiveRenderingEnabled={true}
+					style={{
+						width: 150,
+						height: 150,
+						resizeMode: 'cover',
+						backgroundColor: 'red',
+					}}
+					source={{ uri: base64Img }}
+				/> */}
+				<View style={itemContentContainer}>
+					<Text style={productName}>{name}</Text>
+					<Text style={productPrice}>{price + ' DA'}</Text>
+				</View>
+			</View>
+		</TouchableOpacity>
 	);
 };
 
 DishItem.protoTypes = {
-	product: PropTypes.object.isRequired,
+	dish: PropTypes.object.isRequired,
 };
 
 export default DishItem;

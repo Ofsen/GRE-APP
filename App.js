@@ -21,7 +21,7 @@ const App = () => {
 					<Tab.Navigator
 						initialRouteName='Produits'
 						tabBarOptions={{
-							activeTintColor: '#ff4d00',
+							activeTintColor: '#E53E3E',
 							labelStyle: { fontSize: 12 },
 						}}
 					>

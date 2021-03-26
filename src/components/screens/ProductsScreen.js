@@ -1,5 +1,4 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 // Components
 import Dishs from '../dishs/Dishs';
@@ -10,7 +9,20 @@ const Stack = createStackNavigator();
 const HomeScreen = ({ navigation }) => {
 	return (
 		<Stack.Navigator>
-			<Stack.Screen name='LISTE DES PRODUITS' component={Dishs} />
+			<Stack.Screen
+				name='LISTE DES PRODUITS'
+				component={Dishs}
+				options={() => ({
+					headerTitleStyle: {
+						color: '#E53E3E',
+						fontSize: 16,
+						marginStart: 8,
+					},
+					cardStyle: {
+						backgroundColor: '#fff',
+					},
+				})}
+			/>
 			<Stack.Screen
 				name='DishSingle'
 				component={DishSingle}
@@ -18,23 +30,16 @@ const HomeScreen = ({ navigation }) => {
 					title: route.params.name,
 					headerTitleStyle: {
 						marginStart: -14,
+						color: '#E53E3E',
+						fontSize: 16,
+					},
+					cardStyle: {
+						backgroundColor: '#fff',
 					},
 				})}
 			/>
 		</Stack.Navigator>
 	);
 };
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		padding: 10,
-		alignItems: 'center',
-	},
-	buttonWrap: {
-		width: '100%',
-		margin: 5,
-	},
-});
 
 export default HomeScreen;

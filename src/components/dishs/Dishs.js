@@ -8,7 +8,6 @@ import {
 	FlatList,
 	View,
 	RefreshControl,
-	TextInput,
 } from 'react-native';
 import DishItem from './DishItem';
 // Actions
@@ -18,12 +17,7 @@ import dishStyles from './dishStyles';
 
 const Dishs = ({ dish: { dishs, loading }, getDishs, reset, navigation }) => {
 	// Specific styles
-	const {
-		headerSearchInput,
-		headerTitle,
-		listTitle,
-		flContainer,
-	} = dishStyles;
+	const { headerTitle, flContainer, flexOne, bgWhite } = dishStyles;
 
 	const handleRefresh = () => {
 		reset();
@@ -41,40 +35,37 @@ const Dishs = ({ dish: { dishs, loading }, getDishs, reset, navigation }) => {
 	);
 
 	return (
-		<View style={{ flex: 1 }}>
-			<FlatList
-				ListHeaderComponent={header}
-				contentContainerStyle={flContainer}
-				columnWrapperStyle={{ justifyContent: 'space-around' }}
-				ListEmptyComponent={
-					<ActivityIndicator
-						style={{ flex: 6 }}
-						size='large'
-						color='#ff4d00'
-					/>
-				}
-				numColumns={2}
-				keyExtractor={(item, index) => index.toString()}
-				data={dishs}
-				renderItem={({ item }) => (
-					<DishItem navigation={navigation} dish={item} />
-				)}
-				refreshControl={
-					<RefreshControl
-						refreshing={loading}
-						onRefresh={handleRefresh}
-						colors={['#ff4d00']}
-					/>
-				}
-			/>
-		</View>
+		<FlatList
+			ListHeaderComponent={header}
+			contentContainerStyle={flContainer}
+			columnWrapperStyle={{ justifyContent: 'space-around' }}
+			ListEmptyComponent={
+				<ActivityIndicator
+					style={{ flex: 6 }}
+					size='large'
+					color='#E53E3E'
+				/>
+			}
+			numColumns={2}
+			keyExtractor={(item, index) => index.toString()}
+			data={dishs}
+			renderItem={({ item }) => (
+				<DishItem navigation={navigation} dish={item} />
+			)}
+			refreshControl={
+				<RefreshControl
+					refreshing={loading}
+					onRefresh={handleRefresh}
+					colors={['#E53E3E']}
+				/>
+			}
+		/>
 	);
 };
 
 Dishs.propTypes = {
 	dish: PropTypes.object.isRequired,
 	getDishs: PropTypes.func.isRequired,
-	incrementPage: PropTypes.func.isRequired,
 	reset: PropTypes.func.isRequired,
 };
 
