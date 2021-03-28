@@ -6,7 +6,7 @@ import DishSingle from '../dishs/DishSingle';
 
 const Stack = createStackNavigator();
 
-const HomeScreen = ({ navigation }) => {
+const ProductScreen = ({ navigation }) => {
 	return (
 		<Stack.Navigator>
 			<Stack.Screen
@@ -42,4 +42,4 @@ const HomeScreen = ({ navigation }) => {
 	);
 };
 
-export default HomeScreen;
+export default ProductScreen;
