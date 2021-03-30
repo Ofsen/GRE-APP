@@ -122,10 +122,6 @@ export default StyleSheet.create({
 	},
 	sectionHeader: {
 		paddingVertical: 15,
-		paddingHorizontal: 20,
-		borderTopWidth: 1,
-		borderBottomWidth: 1,
-		borderColor: '#c1c1c1',
 		marginBottom: 10,
 		justifyContent: 'space-between',
 	},

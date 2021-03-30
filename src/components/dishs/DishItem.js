@@ -8,12 +8,15 @@ import { View, Text, Image, TouchableOpacity } from 'react-native';
 const DishItem = ({ dish, navigation }) => {
 	const {
 		name,
+		desc,
 		category,
 		price,
 		img: {
 			data: { data },
 		},
 	} = dish;
+
+	const opLenght = desc.optional.length;
 
 	const {
 		item,
@@ -22,6 +25,7 @@ const DishItem = ({ dish, navigation }) => {
 		itemContentContainer,
 		productPrice,
 		productName,
+		flexDRow,
 	} = dishStyles;
 
 	return (
@@ -29,7 +33,7 @@ const DishItem = ({ dish, navigation }) => {
 			style={item}
 			onPress={() =>
 				navigation.navigate('DishSingle', {
-					dish: dish,
+					dishId: dish._id,
 					name: name.toUpperCase(),
 				})
 			}
@@ -51,6 +55,21 @@ const DishItem = ({ dish, navigation }) => {
 				<View style={itemContentContainer}>
 					<Text style={productName}>{name}</Text>
 					<Text style={productPrice}>{price + ' DA'}</Text>
+					<Text>Catégory: {category.name}</Text>
+					<View style={flexDRow}>
+						<Text>Ingredients : </Text>
+						{desc.main.map((item) => (
+							<Text key={item.name.toString()}>
+								{item.name},{' '}
+							</Text>
+						))}
+						{desc.optional.map((item, i) => (
+							<Text>
+								{item.name}
+								{opLenght === i + 1 ? '' : ', '}
+							</Text>
+						))}
+					</View>
 				</View>
 			</View>
 		</TouchableOpacity>
