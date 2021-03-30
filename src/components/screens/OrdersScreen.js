@@ -1,12 +1,25 @@
 import React from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Button } from 'react-native';
+// Redux
+import { useSelector, useDispatch } from 'react-redux';
+// Actions
+import { reset } from '../../actions/userActions';
 
-const OrdersScreen = ({ navigation }) => {
+const OrdersScreen = () => {
+	const user = useSelector((state) => state.user);
+	const dispatch = useDispatch();
+	console.log(user);
+
 	return (
 		<View style={styles.container}>
 			<Text style={styles.text}>Orders! Orders everywhere!!</Text>
-			<StatusBar style='auto' />
+			{console.log(user)}
+			<Button
+				title="Retour a l'accueil"
+				onPress={() => {
+					dispatch(reset());
+				}}
+			/>
 		</View>
 	);
 };
