@@ -58,13 +58,11 @@ const DishItem = ({ dish, navigation }) => {
 					<Text>Catégory: {category.name}</Text>
 					<View style={flexDRow}>
 						<Text>Ingredients : </Text>
-						{desc.main.map((item) => (
-							<Text key={item.name.toString()}>
-								{item.name},{' '}
-							</Text>
+						{desc.main.map((item, i) => (
+							<Text key={i}>{item.name}, </Text>
 						))}
 						{desc.optional.map((item, i) => (
-							<Text>
+							<Text key={i}>
 								{item.name}
 								{opLenght === i + 1 ? '' : ', '}
 							</Text>

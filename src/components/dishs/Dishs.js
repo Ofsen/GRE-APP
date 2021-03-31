@@ -49,8 +49,8 @@ const Dishs = ({ dish: { dishs, loading }, getDishs, reset, navigation }) => {
 			numColumns={2}
 			keyExtractor={(item, index) => index.toString()}
 			data={dishs}
-			renderItem={({ item }) => (
-				<DishItem navigation={navigation} dish={item} />
+			renderItem={({ item, i }) => (
+				<DishItem key={i} navigation={navigation} dish={item} />
 			)}
 			refreshControl={
 				<RefreshControl

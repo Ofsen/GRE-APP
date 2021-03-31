@@ -70,13 +70,8 @@ export default StyleSheet.create({
 	},
 	contentContainer: {
 		backgroundColor: '#fff',
-		marginTop: -50,
 		padding: 20,
-		borderRadius: 30,
-		marginBottom: 65,
-	},
-	titlePriceContainer: {
-		justifyContent: 'space-evenly',
+		marginBottom: 124,
 	},
 	heartShareContainer: {
 		flexGrow: 1,
@@ -95,7 +90,7 @@ export default StyleSheet.create({
 	buyContainer: {
 		bottom: 0,
 		position: 'absolute',
-		margin: 5,
+		width: '100%',
 	},
 	buyContactButton: {
 		flex: 1,
@@ -142,7 +137,4 @@ export default StyleSheet.create({
 	fontBold: { fontWeight: 'bold' },
 	colorGreen: { color: '#27ae60' },
 	colorRed: { color: '#e74c3c' },
-	colorAgoOrange: { color: '#ff4d00' },
-	dimWindowOneFourth: { width: Dimensions.get('window').width * 0.75 },
-	windowWidth: { width: Dimensions.get('window').width },
 });

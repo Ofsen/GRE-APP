@@ -1,15 +1,25 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 // Nav
 import { useFocusEffect } from '@react-navigation/native';
 // Components
-import { ScrollView, View, Text, ActivityIndicator } from 'react-native';
+import {
+	ScrollView,
+	View,
+	Text,
+	ActivityIndicator,
+	Dimensions,
+	TouchableOpacity,
+} from 'react-native';
 import BuyButton from './layout/buyButton';
+import Counter from './layout/Counter';
 // CSS
 import dishStyles from './dishStyles';
 // Actions
 import { getDishById, resetSingle } from '../../actions/dishActions';
+// Icons
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const DishSingle = ({
 	route: {
@@ -19,6 +29,15 @@ const DishSingle = ({
 }) => {
 	const dispatch = useDispatch();
 	const singleDish = useSelector((state) => state.dish.singleDish);
+	const [counter, setCounter] = useState(1);
+
+	const increase = () => {
+		setCounter(counter + 1);
+	};
+
+	const decrease = () => {
+		if (counter > 1) setCounter(counter - 1);
+	};
 
 	// Hide tab bar
 	useFocusEffect(
@@ -34,7 +53,6 @@ const DishSingle = ({
 
 			return () => {
 				// Do something when the screen is unfocused
-				// Useful for cleanup functions
 				dispatch(resetSingle());
 				if (parent) {
 					parent.setOptions({
@@ -60,84 +78,155 @@ const DishSingle = ({
 
 		const {
 			contentContainer,
-			titlePriceContainer,
 			buyContainer,
-			sectionHeader,
 			flexOne,
 			flexDRow,
 			fontBold,
-			colorAgoOrange,
-			dimWindowOneFourth,
-			windowWidth,
 		} = dishStyles;
 
 		return (
 			<View style={flexOne}>
 				<ScrollView style={flexOne}>
-					<Text>{JSON.stringify(img)}</Text>
+					<View>
+						<Text>{JSON.stringify(img)}</Text>
+					</View>
 					<View style={contentContainer}>
 						<View style={flexDRow}>
 							<View
 								style={[
-									titlePriceContainer,
-									dimWindowOneFourth,
+									flexDRow,
+									{
+										justifyContent: 'space-between',
+									},
 								]}
 							>
 								<Text
 									style={[
 										fontBold,
-										dimWindowOneFourth,
-										{ fontSize: 26 },
+										{
+											fontSize: 32,
+											color: '#E53E3E',
+											width:
+												Dimensions.get('window').width *
+												0.6,
+										},
 									]}
 								>
-									{name}
+									{name.toUpperCase()}
 								</Text>
 								<Text
 									style={[
 										fontBold,
-										colorAgoOrange,
-										dimWindowOneFourth,
-										{ fontSize: 32 },
+										{
+											fontSize: 32,
+											textAlign: 'right',
+											color: '#4299E1',
+											width:
+												Dimensions.get('window').width *
+												0.3,
+										},
 									]}
 								>
 									{price + ' DA'}
 								</Text>
 							</View>
 						</View>
-						<View style={[fontBold, flexDRow, sectionHeader]}>
+						<View
+							style={[
+								fontBold,
+								flexDRow,
+								{ paddingTop: 12, paddingBottom: 28 },
+							]}
+						>
 							<Text
 								style={[
 									fontBold,
 									{
-										fontSize: 18,
+										fontSize: 16,
+										color: '#718096',
 									},
 								]}
 							>
-								Ingrédients principales
+								{category.name.toUpperCase()}
 							</Text>
 						</View>
+						<Text
+							style={[
+								fontBold,
+								{
+									fontSize: 24,
+									color: '#2D3748',
+								},
+							]}
+						>
+							{'Ingrédients'.toUpperCase()}
+						</Text>
 						{desc.main.map((item) => (
 							<Text key={item.name.toString()}>{item.name}</Text>
 						))}
-						<View style={[fontBold, flexDRow, sectionHeader]}>
-							<Text
-								style={[
-									fontBold,
-									{
-										fontSize: 18,
-									},
-								]}
-							>
-								Ingrédients optionnels
-							</Text>
-						</View>
-						{desc.optional.map((item, i) => (
-							<Text>{item.name} </Text>
+						{desc.optional.map((item) => (
+							<Text key={item.name.toString()}>{item.name} </Text>
 						))}
-						<Text>{JSON.stringify(category)}</Text>
 					</View>
 				</ScrollView>
-				<View style={[buyContainer, flexDRow]}>
+				<View style={[buyContainer]}>
+					<View
+						style={{
+							flexDirection: 'row',
+							justifyContent: 'center',
+							alignItems: 'center',
+							height: 64,
+							margin: 16,
+						}}
+					>
+						<TouchableOpacity
+							onPress={() => decrease()}
+							style={[
+								{
+									justifyContent: 'center',
+									alignItems: 'center',
+									padding: 16,
+									borderRadius: 10,
+									backgroundColor: '#4299E1',
+								},
+							]}
+						>
+							<MaterialCommunityIcons
+								name='minus'
+								size={32}
+								color='#fff'
+							/>
+						</TouchableOpacity>
+						<Text
+							style={[
+								{
+									fontSize: 46,
+									color: '#1A365D',
+									padding: 32,
+								},
+							]}
+						>
+							{counter}
+						</Text>
+						<TouchableOpacity
+							onPress={() => increase()}
+							style={[
+								{
+									justifyContent: 'center',
+									alignItems: 'center',
+									padding: 16,
+									borderRadius: 10,
+									backgroundColor: '#4299E1',
+								},
+							]}
+						>
+							<MaterialCommunityIcons
+								name='plus'
+								size={32}
+								color='#fff'
+							/>
+						</TouchableOpacity>
+					</View>
 					<BuyButton />
 				</View>
 			</View>
