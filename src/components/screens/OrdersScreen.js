@@ -12,7 +12,6 @@ const OrdersScreen = () => {
 	return (
 		<View style={styles.container}>
 			<Text style={styles.text}>Orders! Orders everywhere!!</Text>
-			{console.log(user)}
 			<Button
 				title="Retour a l'accueil"
 				onPress={() => {

@@ -21,9 +21,7 @@ const HomeScreen = ({ navigation }) => {
 				component={ProductsScreen}
 				options={{
 					tabBarLabel: 'Produits',
-					tabBarIcon: ({ color, size }) => (
-						<FontAwesome name='home' color={color} size={30} />
-					),
+					tabBarIcon: ({ color, size }) => <FontAwesome name='home' color={color} size={30} />,
 				}}
 			/>
 			<Tab.Screen
@@ -31,13 +29,7 @@ const HomeScreen = ({ navigation }) => {
 				component={OrdersScreen}
 				options={{
 					tabBarLabel: 'Panier',
-					tabBarIcon: ({ color, size }) => (
-						<FontAwesome
-							name='shopping-basket'
-							color={color}
-							size={size}
-						/>
-					),
+					tabBarIcon: ({ color, size }) => <FontAwesome name='shopping-basket' color={color} size={size} />,
 				}}
 			/>
 		</Tab.Navigator>

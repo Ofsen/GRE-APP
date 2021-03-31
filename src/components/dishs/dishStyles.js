@@ -102,18 +102,7 @@ export default StyleSheet.create({
 		borderRadius: 50,
 	},
 	buyButton: {
-		flexGrow: 1.3,
-		backgroundColor: '#ff4d00',
-	},
-	contactButton: {
-		backgroundColor: '#e1e1e1',
-	},
-	contactText: {
-		fontSize: 16,
-		textAlignVertical: 'center',
-		height: '100%',
-		color: '#1D1D1D',
-		paddingHorizontal: 5,
+		backgroundColor: '#E53E3E',
 	},
 	sectionHeader: {
 		paddingVertical: 15,

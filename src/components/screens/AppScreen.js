@@ -29,11 +29,7 @@ const AppScreen = () => {
 					},
 				}}
 			>
-				{userId == null ? (
-					<Stack.Screen name='Accueil' component={WelcomeScreen} />
-				) : (
-					<Stack.Screen name='Produits' component={HomeScreen} />
-				)}
+				{userId == null ? <Stack.Screen name='Accueil' component={WelcomeScreen} /> : <Stack.Screen name='Produits' component={HomeScreen} />}
 			</Stack.Navigator>
 		</NavigationContainer>
 	);
