@@ -1,6 +1,5 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import PropTypes from 'prop-types';
 // Redux
 import { useSelector } from 'react-redux';
 // Nav
@@ -29,7 +28,11 @@ const AppScreen = () => {
 					},
 				}}
 			>
-				{userId == null ? <Stack.Screen name='Accueil' component={WelcomeScreen} /> : <Stack.Screen name='Produits' component={HomeScreen} />}
+				{userId == null ? (
+					<Stack.Screen name='Accueil' component={WelcomeScreen} />
+				) : (
+					<Stack.Screen name='Produits' component={HomeScreen} />
+				)}
 			</Stack.Navigator>
 		</NavigationContainer>
 	);

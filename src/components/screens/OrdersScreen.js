@@ -23,13 +23,10 @@ const OrdersScreen = ({ navigation }) => {
 
 	useEffect(() => {
 		dispatch(getOrderedDishsByUser(user));
-		return dispatch(resetOrderedDishs());
-	}, []);
-
-	console.log(orderedDishsList);
+	}, [orderedDishsList]);
 
 	const header = (
-		<View>
+		<View style={{ marginTop: 24, paddingVertical: 16 }}>
 			<Text style={headerTitle}>VOTRE PANIER</Text>
 		</View>
 	);
@@ -39,7 +36,17 @@ const OrdersScreen = ({ navigation }) => {
 			ListHeaderComponent={header}
 			contentContainerStyle={flContainer}
 			columnWrapperStyle={{ justifyContent: 'space-around' }}
-			ListEmptyComponent={<ActivityIndicator style={{ flex: 6 }} size='large' color='#E53E3E' />}
+			ListEmptyComponent={() => {
+				if (orderedDishsList != null) {
+					return (
+						<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+							<Text style={{ fontSize: 16 }}>Votre panier est vide.</Text>
+						</View>
+					);
+				} else {
+					return <ActivityIndicator style={{ flex: 1 }} size='large' color='#E53E3E' />;
+				}
+			}}
 			numColumns={2}
 			keyExtractor={(item, index) => index.toString()}
 			data={orderedDishsList}

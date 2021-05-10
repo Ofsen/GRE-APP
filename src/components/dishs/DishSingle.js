@@ -1,10 +1,20 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 // Nav
 import { useFocusEffect } from '@react-navigation/native';
 // Components
-import { StyleSheet, Pressable, ScrollView, View, Text, ActivityIndicator, Dimensions, Alert, Modal } from 'react-native';
+import {
+	StyleSheet,
+	TouchableOpacity,
+	ScrollView,
+	View,
+	Text,
+	ActivityIndicator,
+	Dimensions,
+	Alert,
+	Modal,
+} from 'react-native';
 import BuyButton from './layout/buyButton';
 import Check from './layout/Check';
 import Counter from './layout/Counter';
@@ -12,7 +22,7 @@ import Counter from './layout/Counter';
 import dishStyles from './dishStyles';
 // Actions
 import { getDishById, resetSingle } from '../../actions/dishActions';
-import { setOrderedDishs, resetOrderedDishs } from '../../actions/orderedDishsActions';
+import { setOrderedDishs } from '../../actions/orderedDishsActions';
 
 const DishSingle = ({
 	route: {
@@ -37,36 +47,23 @@ const DishSingle = ({
 	const decrease = () => {
 		if (counter > 1) setCounter(counter - 1);
 	};
-	const buy = () => {
-		let order = {
-			dish: singleDish['_id'],
-			option: ingr,
-			quantity: counter,
-			userId: userId,
-		};
-		setModalVisible(!modalVisible);
-		dispatch(setOrderedDishs(order));
-		if (errorOrderedDishs != null) {
-			Alert.alert(JSON.stringify(errorOrderedDishs));
-		}
-	};
 
 	// Hide tab bar
 	useFocusEffect(
 		useCallback(() => {
 			// Do something when the screen is focused
-			dispatch(getDishById(dishId));
 			const parent = dangerouslyGetParent();
 			if (parent) parent.setOptions({ tabBarVisible: false });
 			return () => {
 				// Do something when the screen is unfocused
-				dispatch(resetSingle());
 				if (parent) parent.setOptions({ tabBarVisible: true });
-
-				dispatch(resetOrderedDishs());
 			};
 		}, [dangerouslyGetParent])
 	);
+
+	useEffect(() => {
+		dispatch(getDishById(dishId));
+	});
 
 	if (singleDish == null) {
 		return (
@@ -83,6 +80,20 @@ const DishSingle = ({
 			item.selected = true;
 		});
 
+		const buy = () => {
+			var order = {
+				dish: singleDish['_id'],
+				option: ingr,
+				quantity: counter,
+				userId: userId,
+			};
+			setModalVisible(!modalVisible);
+			dispatch(setOrderedDishs(order));
+			if (errorOrderedDishs != null) {
+				Alert.alert(errorOrderedDishs);
+			}
+		};
+
 		if (ingr.length == 0) setIngr(ing);
 
 		return (
@@ -97,18 +108,17 @@ const DishSingle = ({
 					}}
 				>
 					<View style={styles.centeredView}>
-						<Pressable style={styles.hideModal} onPress={() => setModalVisible(!modalVisible)}></Pressable>
 						<View style={styles.modalView}>
 							<Text style={styles.modalText}>Bien ajouté au panier</Text>
-							<Pressable
+							<TouchableOpacity
 								style={[styles.button, styles.buttonClose]}
 								onPress={() => {
-									setModalVisible(!modalVisible);
 									goBack();
+									setModalVisible(!modalVisible);
 								}}
 							>
 								<Text style={styles.textStyle}>Super!</Text>
-							</Pressable>
+							</TouchableOpacity>
 						</View>
 					</View>
 				</Modal>
