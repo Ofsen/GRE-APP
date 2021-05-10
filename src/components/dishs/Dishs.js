@@ -2,13 +2,7 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 // Components
-import {
-	ActivityIndicator,
-	Text,
-	FlatList,
-	View,
-	RefreshControl,
-} from 'react-native';
+import { ActivityIndicator, Text, FlatList, View, RefreshControl } from 'react-native';
 import DishItem from './DishItem';
 // Actions
 import { getDishs, reset } from '../../actions/dishActions';
@@ -17,7 +11,7 @@ import dishStyles from './dishStyles';
 
 const Dishs = ({ dish: { dishs, loading }, getDishs, reset, navigation }) => {
 	// Specific styles
-	const { headerTitle, flContainer, flexOne, bgWhite } = dishStyles;
+	const { headerTitle, flContainer } = dishStyles;
 
 	const handleRefresh = () => {
 		reset();
@@ -39,26 +33,12 @@ const Dishs = ({ dish: { dishs, loading }, getDishs, reset, navigation }) => {
 			ListHeaderComponent={header}
 			contentContainerStyle={flContainer}
 			columnWrapperStyle={{ justifyContent: 'space-around' }}
-			ListEmptyComponent={
-				<ActivityIndicator
-					style={{ flex: 6 }}
-					size='large'
-					color='#E53E3E'
-				/>
-			}
+			ListEmptyComponent={<ActivityIndicator style={{ flex: 6 }} size='large' color='#E53E3E' />}
 			numColumns={2}
 			keyExtractor={(item, index) => index.toString()}
 			data={dishs}
-			renderItem={({ item, i }) => (
-				<DishItem key={i} navigation={navigation} dish={item} />
-			)}
-			refreshControl={
-				<RefreshControl
-					refreshing={loading}
-					onRefresh={handleRefresh}
-					colors={['#E53E3E']}
-				/>
-			}
+			renderItem={({ item, i }) => <DishItem key={i} navigation={navigation} dish={item} />}
+			refreshControl={<RefreshControl refreshing={loading} onRefresh={handleRefresh} colors={['#E53E3E']} />}
 		/>
 	);
 };

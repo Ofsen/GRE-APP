@@ -2,24 +2,16 @@ import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-export default Counter = ({ counter, increase, decrease }) => {
+const Counter = ({ count, increase, decrease }) => {
 	return (
-		<View
-			style={{
-				flexDirection: 'row',
-				justifyContent: 'center',
-				alignItems: 'center',
-				height: 64,
-				margin: 16,
-			}}
-		>
+		<View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', height: 64, margin: 16 }}>
 			<TouchableOpacity
 				onPress={() => decrease()}
 				style={[
 					{
 						justifyContent: 'center',
 						alignItems: 'center',
-						padding: 10,
+						padding: 16,
 						borderRadius: 10,
 						backgroundColor: '#4299E1',
 					},
@@ -30,13 +22,13 @@ export default Counter = ({ counter, increase, decrease }) => {
 			<Text
 				style={[
 					{
-						fontSize: 22,
-						color: '#718096',
-						padding: 20,
+						fontSize: 46,
+						color: '#1A365D',
+						padding: 32,
 					},
 				]}
 			>
-				{counter}
+				{count}
 			</Text>
 			<TouchableOpacity
 				onPress={() => increase()}
@@ -44,7 +36,7 @@ export default Counter = ({ counter, increase, decrease }) => {
 					{
 						justifyContent: 'center',
 						alignItems: 'center',
-						padding: 10,
+						padding: 16,
 						borderRadius: 10,
 						backgroundColor: '#4299E1',
 					},
@@ -55,3 +47,5 @@ export default Counter = ({ counter, increase, decrease }) => {
 		</View>
 	);
 };
+
+export default Counter;

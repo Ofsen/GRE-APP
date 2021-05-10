@@ -6,18 +6,12 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 // CSS
 import dishStyles from '../dishStyles';
 
-const BuyButton = () => {
-	const {
-		buyContactButton,
-		buyButton,
-		textACenter,
-		flexDRow,
-		fontBold,
-	} = dishStyles;
+const BuyButton = ({ buy }) => {
+	const { buyContactButton, buyButton, textACenter, flexDRow, fontBold } = dishStyles;
 
 	return (
 		<TouchableOpacity
-			onPress={() => alert('buy')}
+			onPress={() => buy()}
 			style={[
 				buyContactButton,
 				textACenter,

@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-	Text,
-	TouchableOpacity,
-	View,
-	Dimensions,
-	StyleSheet,
-} from 'react-native';
+import { Text, TouchableOpacity, View, Dimensions, StyleSheet } from 'react-native';
 // Redux
 import { useDispatch } from 'react-redux';
 // Actions
@@ -21,13 +15,9 @@ const WelcomeScreen = () => {
 		<View style={styles.container}>
 			<Text style={styles.welcomeText}>Bienvenu!</Text>
 			<Text style={styles.welcomeSubText}>
-				Cliquez sur le bouton ci-dessous d'acceder a la liste de
-				produits à commander.
+				Cliquez sur le bouton ci-dessous d'acceder a la liste de produits à commander.
 			</Text>
-			<TouchableOpacity
-				style={styles.button}
-				onPress={() => dispatch(setUser(newUserId))}
-			>
+			<TouchableOpacity style={styles.button} onPress={() => dispatch(setUser(newUserId))}>
 				<Text style={styles.textButton}>Liste des produits!</Text>
 			</TouchableOpacity>
 		</View>

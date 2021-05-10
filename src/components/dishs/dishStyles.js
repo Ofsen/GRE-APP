@@ -89,6 +89,7 @@ export default StyleSheet.create({
 	},
 	buyContainer: {
 		bottom: 0,
+		left: 0,
 		position: 'absolute',
 		width: '100%',
 	},
@@ -119,7 +120,6 @@ export default StyleSheet.create({
 		justifyContent: 'space-between',
 	},
 	flexOne: { flex: 1 },
-	bgWhite: { backgroundColor: '#fff' },
 	textACenter: { textAlign: 'center' },
 	detailsText: { paddingVertical: 8 },
 	flexDRow: { flexDirection: 'row' },

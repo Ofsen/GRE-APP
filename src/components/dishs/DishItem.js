@@ -18,15 +18,7 @@ const DishItem = ({ dish, navigation }) => {
 
 	const opLenght = desc.optional.length;
 
-	const {
-		item,
-		productContainer,
-		productImage,
-		itemContentContainer,
-		productPrice,
-		productName,
-		flexDRow,
-	} = dishStyles;
+	const { item, productContainer, productImage, itemContentContainer, productPrice, productName, flexDRow } = dishStyles;
 
 	return (
 		<TouchableOpacity

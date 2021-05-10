@@ -1,37 +1,52 @@
-import React from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import React, { useEffect } from 'react';
+import { Text, View, FlatList, RefreshControl, ActivityIndicator } from 'react-native';
 // Redux
 import { useSelector, useDispatch } from 'react-redux';
 // Actions
-import { reset } from '../../actions/userActions';
+import { getOrderedDishsByUser, resetOrderedDishs } from '../../actions/orderedDishsActions';
+// CSS
+import dishStyles from '../dishs/dishStyles';
 
-const OrdersScreen = () => {
-	const user = useSelector((state) => state.user);
+const OrdersScreen = ({ navigation }) => {
+	// Specific styles
+	const { headerTitle, flContainer } = dishStyles;
 	const dispatch = useDispatch();
 
-	return (
-		<View style={styles.container}>
-			<Text style={styles.text}>Orders! Orders everywhere!!</Text>
-			<Button
-				title="Retour a l'accueil"
-				onPress={() => {
-					dispatch(reset());
-				}}
-			/>
+	const user = useSelector((state) => state.user.userId);
+	const orderedDishsList = useSelector((state) => state.orderedDishs.orderedDishsList);
+	const loadingOrderedDishs = useSelector((state) => state.orderedDishs.loadingOrderedDishs);
+
+	const handleRefresh = () => {
+		dispatch(resetOrderedDishs());
+		dispatch(getOrderedDishsByUser(user));
+	};
+
+	useEffect(() => {
+		dispatch(getOrderedDishsByUser(user));
+		return dispatch(resetOrderedDishs());
+	}, []);
+
+	console.log(orderedDishsList);
+
+	const header = (
+		<View>
+			<Text style={headerTitle}>VOTRE PANIER</Text>
 		</View>
 	);
-};
 
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: '#fff',
-		alignItems: 'center',
-		justifyContent: 'center',
-	},
-	text: {
-		fontSize: 17,
-	},
-});
+	return (
+		<FlatList
+			ListHeaderComponent={header}
+			contentContainerStyle={flContainer}
+			columnWrapperStyle={{ justifyContent: 'space-around' }}
+			ListEmptyComponent={<ActivityIndicator style={{ flex: 6 }} size='large' color='#E53E3E' />}
+			numColumns={2}
+			keyExtractor={(item, index) => index.toString()}
+			data={orderedDishsList}
+			renderItem={({ item, i }) => <Text>{JSON.stringify(item)}</Text>}
+			refreshControl={<RefreshControl refreshing={loadingOrderedDishs} onRefresh={handleRefresh} colors={['#E53E3E']} />}
+		/>
+	);
+};
 
 export default OrdersScreen;

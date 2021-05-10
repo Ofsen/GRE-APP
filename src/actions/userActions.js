@@ -25,7 +25,7 @@ export const setUser = (newUserId) => async (dispatch) => {
 	}
 };
 
-export const reset = () => (dispatch) => {
+export const resetUser = () => (dispatch) => {
 	dispatch({
 		type: RESET,
 	});
