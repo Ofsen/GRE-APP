@@ -9,7 +9,7 @@ import { getDishs, reset } from '../../actions/dishActions';
 // CSS
 import dishStyles from './dishStyles';
 
-const Dishs = ({ dish: { dishs, loading }, getDishs, reset, navigation }) => {
+const Dishs = ({ dish: { dishs, loadingDishs }, getDishs, reset, navigation }) => {
 	// Specific styles
 	const { headerTitle, flContainer } = dishStyles;
 
@@ -23,7 +23,7 @@ const Dishs = ({ dish: { dishs, loading }, getDishs, reset, navigation }) => {
 	}, []);
 
 	const header = (
-		<View>
+		<View style={{ paddingBottom: 16 }}>
 			<Text style={headerTitle}>LISTE DES PRODUITS</Text>
 		</View>
 	);
@@ -32,13 +32,12 @@ const Dishs = ({ dish: { dishs, loading }, getDishs, reset, navigation }) => {
 		<FlatList
 			ListHeaderComponent={header}
 			contentContainerStyle={flContainer}
-			columnWrapperStyle={{ justifyContent: 'space-around' }}
 			ListEmptyComponent={<ActivityIndicator style={{ flex: 6 }} size='large' color='#E53E3E' />}
-			numColumns={2}
+			numColumns={1}
 			keyExtractor={(item, index) => index.toString()}
 			data={dishs}
 			renderItem={({ item, i }) => <DishItem key={i} navigation={navigation} dish={item} />}
-			refreshControl={<RefreshControl refreshing={loading} onRefresh={handleRefresh} colors={['#E53E3E']} />}
+			refreshControl={<RefreshControl refreshing={loadingDishs} onRefresh={handleRefresh} colors={['#E53E3E']} />}
 		/>
 	);
 };

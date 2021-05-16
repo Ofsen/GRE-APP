@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, View, FlatList, RefreshControl, ActivityIndicator } from 'react-native';
 // Redux
 import { useSelector, useDispatch } from 'react-redux';
@@ -6,11 +6,15 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getOrderedDishsByUser, resetOrderedDishs } from '../../actions/orderedDishsActions';
 // CSS
 import dishStyles from '../dishs/dishStyles';
+// Components
+import SingleOrder from '../layout/SingleOrder';
 
 const OrdersScreen = ({ navigation }) => {
 	// Specific styles
 	const { headerTitle, flContainer } = dishStyles;
 	const dispatch = useDispatch();
+
+	const [totalPrice, setTotalPrice] = useState(0);
 
 	const user = useSelector((state) => state.user.userId);
 	const orderedDishsList = useSelector((state) => state.orderedDishs.orderedDishsList);
@@ -21,9 +25,19 @@ const OrdersScreen = ({ navigation }) => {
 		dispatch(getOrderedDishsByUser(user));
 	};
 
+	const getTotal = () => {
+		var total = 0;
+		if (orderedDishsList != null)
+			orderedDishsList.map((item) => {
+				total = total + item.dish.price * item.quantity;
+			});
+		setTotalPrice(total);
+	};
+
 	useEffect(() => {
 		dispatch(getOrderedDishsByUser(user));
-	}, [orderedDishsList]);
+		getTotal();
+	}, [user, loadingOrderedDishs]);
 
 	const header = (
 		<View style={{ marginTop: 24, paddingVertical: 16 }}>
@@ -31,11 +45,24 @@ const OrdersScreen = ({ navigation }) => {
 		</View>
 	);
 
+	const footer = () => {
+		if (totalPrice != 0) {
+			return (
+				<View style={{ flexDirection: 'row-reverse', alignItems: 'center', paddingVertical: 16 }}>
+					<Text style={{ fontSize: 28, fontWeight: 'bold', color: '#C53030' }}>{totalPrice + ' DA'}</Text>
+					<Text style={{ fontSize: 28 }}>Total: </Text>
+				</View>
+			);
+		} else {
+			return <></>;
+		}
+	};
+
 	return (
 		<FlatList
 			ListHeaderComponent={header}
+			ListFooterComponent={footer}
 			contentContainerStyle={flContainer}
-			columnWrapperStyle={{ justifyContent: 'space-around' }}
 			ListEmptyComponent={() => {
 				if (orderedDishsList != null) {
 					return (
@@ -47,10 +74,10 @@ const OrdersScreen = ({ navigation }) => {
 					return <ActivityIndicator style={{ flex: 1 }} size='large' color='#E53E3E' />;
 				}
 			}}
-			numColumns={2}
+			numColumns={1}
 			keyExtractor={(item, index) => index.toString()}
 			data={orderedDishsList}
-			renderItem={({ item, i }) => <Text>{JSON.stringify(item)}</Text>}
+			renderItem={({ item, i }) => <SingleOrder key={i} item={item} />}
 			refreshControl={<RefreshControl refreshing={loadingOrderedDishs} onRefresh={handleRefresh} colors={['#E53E3E']} />}
 		/>
 	);

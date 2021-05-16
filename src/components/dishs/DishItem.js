@@ -3,26 +3,19 @@ import PropTypes from 'prop-types';
 // CSS
 import dishStyles from './dishStyles';
 // Components
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { View, Text, Image, TouchableOpacity, Dimensions } from 'react-native';
+import apiUrl from '../../apiUrl';
 
 const DishItem = ({ dish, navigation }) => {
-	const {
-		name,
-		desc,
-		category,
-		price,
-		img: {
-			data: { data },
-		},
-	} = dish;
+	const { name, desc, category, price, img } = dish;
 
 	const opLenght = desc.optional.length;
 
-	const { item, productContainer, productImage, itemContentContainer, productPrice, productName, flexDRow } = dishStyles;
+	const { itemList, productContainer, productImage, itemContentContainer, productPrice, productName, flexDRow } = dishStyles;
 
 	return (
 		<TouchableOpacity
-			style={item}
+			style={[itemList]}
 			onPress={() =>
 				navigation.navigate('DishSingle', {
 					dishId: dish._id,
@@ -31,35 +24,26 @@ const DishItem = ({ dish, navigation }) => {
 			}
 		>
 			<View style={productContainer}>
-				<View style={productImage}>
-					<Text>img here</Text>
-				</View>
-				{/* <Image
+				<Image
 					progressiveRenderingEnabled={true}
 					style={{
 						width: 150,
 						height: 150,
-						resizeMode: 'cover',
-						backgroundColor: 'red',
+						borderRadius: 5,
 					}}
-					source={{ uri: base64Img }}
-				/> */}
-				<View style={itemContentContainer}>
+					source={{ uri: apiUrl + 'uploads/' + img }}
+				/>
+				<View style={[itemContentContainer, { width: Dimensions.get('screen').width * 0.5, position: 'relative' }]}>
 					<Text style={productName}>{name}</Text>
-					<Text style={productPrice}>{price + ' DA'}</Text>
 					<Text>Catégory: {category.name}</Text>
-					<View style={flexDRow}>
+					<View>
 						<Text>Ingredients : </Text>
-						{desc.main.map((item, i) => (
-							<Text key={i}>{item.name}, </Text>
-						))}
-						{desc.optional.map((item, i) => (
-							<Text key={i}>
-								{item.name}
-								{opLenght === i + 1 ? '' : ', '}
-							</Text>
-						))}
+						<Text>
+							{desc.main.map((item, i) => item.name.concat('', opLenght > 0 ? ', ' : ''))}
+							{desc.optional.map((item, i) => item.name.concat('', i < opLenght - 1 ? ', ' : ''))}
+						</Text>
 					</View>
+					<Text style={[productPrice, { position: 'absolute', bottom: 8, right: 8 }]}>{price + ' DA'}</Text>
 				</View>
 			</View>
 		</TouchableOpacity>

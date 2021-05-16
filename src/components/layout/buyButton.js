@@ -4,7 +4,7 @@ import { TouchableOpacity, Text } from 'react-native';
 // Icons
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 // CSS
-import dishStyles from '../dishStyles';
+import dishStyles from '../dishs/dishStyles';
 
 const BuyButton = ({ buy }) => {
 	const { buyContactButton, buyButton, textACenter, flexDRow, fontBold } = dishStyles;

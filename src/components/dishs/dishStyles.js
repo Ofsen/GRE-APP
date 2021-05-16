@@ -1,15 +1,13 @@
 import { StyleSheet, Dimensions } from 'react-native';
 
 export default StyleSheet.create({
-	item: {
+	itemList: {
 		width: Dimensions.get('screen').width * 0.9,
-		marginBottom: 20,
 	},
 	productContainer: {
 		backgroundColor: '#EDF2F7',
 		padding: 2,
 		borderRadius: 4,
-		height: Dimensions.get('screen').width * 0.4,
 		marginBottom: 5,
 		flexDirection: 'row',
 	},
@@ -26,7 +24,7 @@ export default StyleSheet.create({
 		paddingVertical: 2,
 	},
 	productName: {
-		fontSize: 16,
+		fontSize: 24,
 		fontWeight: '700',
 	},
 	productPrice: {

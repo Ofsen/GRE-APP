@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Text } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 // CSS
-import dishStyles from '../dishStyles';
+import dishStyles from '../dishs/dishStyles';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const Check = ({ name, selected, disabl, toggl, setToggl }) => {

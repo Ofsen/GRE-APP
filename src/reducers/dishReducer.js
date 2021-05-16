@@ -12,7 +12,7 @@ import {
 const initialState = {
 	dishs: null,
 	singleDish: null,
-	loading: false,
+	loadingDishs: false,
 	singleLoading: false,
 	error: null,
 };
@@ -23,16 +23,16 @@ export default (state = initialState, action) => {
 			return {
 				...state,
 				dishs: action.payload,
-				loading: false,
+				loadingDishs: false,
 			};
 		case GET_SINGLE_DISH:
 			return {
 				...state,
 				singleDish: action.payload,
-				loading: false,
+				singleLoading: false,
 			};
 		case SET_LOADING:
-			return { ...state, loading: true };
+			return { ...state, loadingDishs: true };
 		case SET_SINGLE_LOADING:
 			return { ...state, singleLoading: true };
 		case DISHS_ERROR:

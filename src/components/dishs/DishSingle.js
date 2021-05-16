@@ -14,15 +14,18 @@ import {
 	Dimensions,
 	Alert,
 	Modal,
+	Image,
 } from 'react-native';
-import BuyButton from './layout/buyButton';
-import Check from './layout/Check';
-import Counter from './layout/Counter';
+import BuyButton from '../layout/buyButton';
+import Check from '../layout/Check';
+import Counter from '../layout/Counter';
 // CSS
 import dishStyles from './dishStyles';
 // Actions
 import { getDishById, resetSingle } from '../../actions/dishActions';
 import { setOrderedDishs } from '../../actions/orderedDishsActions';
+
+import apiUrl from '../../apiUrl';
 
 const DishSingle = ({
 	route: {
@@ -31,6 +34,7 @@ const DishSingle = ({
 	navigation: { dangerouslyGetParent, goBack },
 }) => {
 	const dispatch = useDispatch();
+	const singleLoading = useSelector((state) => state.dish.singleLoading);
 	const singleDish = useSelector((state) => state.dish.singleDish);
 	const [counter, setCounter] = useState(1);
 	const [ingr, setIngr] = useState([]);
@@ -62,8 +66,11 @@ const DishSingle = ({
 	);
 
 	useEffect(() => {
-		dispatch(getDishById(dishId));
-	});
+		if (!singleLoading) dispatch(getDishById(dishId));
+		return () => {
+			dispatch(resetSingle());
+		};
+	}, [singleLoading]);
 
 	if (singleDish == null) {
 		return (
@@ -124,7 +131,14 @@ const DishSingle = ({
 				</Modal>
 				<ScrollView style={flexOne}>
 					<View style={{ backgroundColor: '#EDF2F7' }}>
-						<Text>{JSON.stringify(img)}</Text>
+						<Image
+							progressiveRenderingEnabled={true}
+							style={{
+								width: Dimensions.get('window').width,
+								height: Dimensions.get('window').width * 0.7,
+							}}
+							source={{ uri: apiUrl + 'uploads/' + img }}
+						/>
 					</View>
 					<View style={contentContainer}>
 						<View style={flexDRow}>
@@ -176,7 +190,7 @@ const DishSingle = ({
 					</View>
 				</ScrollView>
 				<View style={[buyContainer]}>
-					<Counter increase={increase} decrease={decrease} count={counter} />
+					<Counter buttonSize={16} increase={increase} decrease={decrease} count={counter} />
 					<BuyButton buy={buy} />
 				</View>
 			</View>
