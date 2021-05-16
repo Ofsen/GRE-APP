@@ -6,9 +6,11 @@ export const DISHS_ERROR = 'DISHS_ERROR';
 export const GET_SINGLE_DISH = 'GET_SINGLE_DISH';
 export const SINGLE_DISH_ERROR = 'SINGLE_DISH_ERROR';
 export const RESET_SINGLE = 'RESET_SINGLE';
+export const RESET_DISHS = 'RESET_SINGLE';
 
 export const SET_USER = 'SET_USER';
 export const USER_ERROR = 'USER_ERROR';
+export const RESET_USER = 'RESET_USER';
 
 export const GET_ORDEREDDISHS = 'GET_ORDEREDDISHS';
 export const SET_ORDEREDDISHS = 'SET_ORDEREDDISHS';

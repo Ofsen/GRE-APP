@@ -60,6 +60,7 @@ export default StyleSheet.create({
 		width: Dimensions.get('window').width,
 		paddingHorizontal: 20,
 		flexGrow: 1,
+		backgroundColor: '#fff',
 	},
 	singleProductimage: {
 		resizeMode: 'cover',

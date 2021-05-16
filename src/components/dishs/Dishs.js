@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
 // Components
 import { ActivityIndicator, Text, FlatList, View, RefreshControl } from 'react-native';
 import DishItem from './DishItem';
@@ -9,17 +8,22 @@ import { getDishs, reset } from '../../actions/dishActions';
 // CSS
 import dishStyles from './dishStyles';
 
-const Dishs = ({ dish: { dishs, loadingDishs }, getDishs, reset, navigation }) => {
+const Dishs = ({ navigation }) => {
 	// Specific styles
 	const { headerTitle, flContainer } = dishStyles;
+	const dispatch = useDispatch();
+
+	const dish = useSelector((state) => state.dish);
+
+	const { dishs, loadingDishs } = dish;
 
 	const handleRefresh = () => {
-		reset();
-		getDishs();
+		dispatch(reset());
+		dispatch(getDishs());
 	};
 
 	useEffect(() => {
-		getDishs();
+		dispatch(getDishs());
 	}, []);
 
 	const header = (
@@ -42,14 +46,4 @@ const Dishs = ({ dish: { dishs, loadingDishs }, getDishs, reset, navigation }) =
 	);
 };
 
-Dishs.propTypes = {
-	dish: PropTypes.object.isRequired,
-	getDishs: PropTypes.func.isRequired,
-	reset: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-	dish: state.dish,
-});
-
-export default connect(mapStateToProps, { getDishs, reset })(Dishs);
+export default Dishs;

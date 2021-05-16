@@ -23,7 +23,7 @@ import Counter from '../layout/Counter';
 import dishStyles from './dishStyles';
 // Actions
 import { getDishById, resetSingle } from '../../actions/dishActions';
-import { setOrderedDishs } from '../../actions/orderedDishsActions';
+import { setOrderedDishs, errorOrderedDishs, setLoading } from '../../actions/orderedDishsActions';
 
 import apiUrl from '../../apiUrl';
 
@@ -41,16 +41,8 @@ const DishSingle = ({
 
 	const userId = useSelector((state) => state.user.userId);
 	const setOrderedDish = useSelector((state) => state.orderedDishs.setOrderedDish);
-	const errorOrderedDishs = useSelector((state) => state.orderedDishs.error);
 
 	const [modalVisible, setModalVisible] = useState(false);
-
-	const increase = () => {
-		setCounter(counter + 1);
-	};
-	const decrease = () => {
-		if (counter > 1) setCounter(counter - 1);
-	};
 
 	// Hide tab bar
 	useFocusEffect(
@@ -70,7 +62,7 @@ const DishSingle = ({
 		return () => {
 			dispatch(resetSingle());
 		};
-	}, [singleLoading]);
+	}, [singleLoading, ingr]);
 
 	if (singleDish == null) {
 		return (
@@ -96,6 +88,7 @@ const DishSingle = ({
 			};
 			setModalVisible(!modalVisible);
 			dispatch(setOrderedDishs(order));
+			dispatch(setLoading());
 			if (errorOrderedDishs != null) {
 				Alert.alert(errorOrderedDishs);
 			}
@@ -190,7 +183,7 @@ const DishSingle = ({
 					</View>
 				</ScrollView>
 				<View style={[buyContainer]}>
-					<Counter buttonSize={16} increase={increase} decrease={decrease} count={counter} />
+					<Counter buttonSize={16} setCounter={setCounter} count={counter} />
 					<BuyButton buy={buy} />
 				</View>
 			</View>

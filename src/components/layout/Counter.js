@@ -2,7 +2,16 @@ import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-const Counter = ({ count, increase, decrease, buttonSize }) => {
+const Counter = ({ count, increase, decrease, buttonSize, setCounter }) => {
+	if (increase == undefined)
+		increase = () => {
+			setCounter(count + 1);
+		};
+	if (decrease == undefined)
+		decrease = () => {
+			if (count > 1) setCounter(count - 1);
+		};
+
 	return (
 		<View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', height: 64, margin: 16 }}>
 			<TouchableOpacity

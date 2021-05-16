@@ -6,7 +6,7 @@ import {
 	DISHS_ERROR,
 	SINGLE_DISH_ERROR,
 	GET_SINGLE_DISH,
-	RESET,
+	RESET_DISHS,
 	RESET_SINGLE,
 } from './types';
 
@@ -69,6 +69,6 @@ export const resetSingle = () => (dispatch) => {
 export const reset = () => (dispatch) => {
 	setLoading();
 	dispatch({
-		type: RESET,
+		type: RESET_DISHS,
 	});
 };

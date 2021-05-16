@@ -1,5 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, FlatList, RefreshControl, ActivityIndicator } from 'react-native';
+import {
+	Text,
+	View,
+	FlatList,
+	RefreshControl,
+	ActivityIndicator,
+	Modal,
+	StyleSheet,
+	Dimensions,
+	TouchableOpacity,
+	StatusBar,
+} from 'react-native';
 // Redux
 import { useSelector, useDispatch } from 'react-redux';
 // Actions
@@ -8,6 +19,10 @@ import { getOrderedDishsByUser, resetOrderedDishs } from '../../actions/orderedD
 import dishStyles from '../dishs/dishStyles';
 // Components
 import SingleOrder from '../layout/SingleOrder';
+import { resetUser } from '../../actions/userActions';
+
+import axios from 'axios';
+import apiUrl from '../../apiUrl';
 
 const OrdersScreen = ({ navigation }) => {
 	// Specific styles
@@ -20,9 +35,27 @@ const OrdersScreen = ({ navigation }) => {
 	const orderedDishsList = useSelector((state) => state.orderedDishs.orderedDishsList);
 	const loadingOrderedDishs = useSelector((state) => state.orderedDishs.loadingOrderedDishs);
 
+	const [modalVisible, setModalVisible] = useState(false);
+	const [count, setCount] = useState(0);
+
 	const handleRefresh = () => {
 		dispatch(resetOrderedDishs());
 		dispatch(getOrderedDishsByUser(user));
+	};
+
+	const validerCommande = () => {
+		if (count === 0)
+			axios
+				.post(apiUrl + 'orders/', {
+					orderedDishs: orderedDishsList.map((item) => item._id),
+				})
+				.then((data) => {
+					setCount(data.data.count);
+				})
+				.catch((err) => {
+					console.log(err);
+				});
+		setModalVisible(!modalVisible);
 	};
 
 	const getTotal = () => {
@@ -35,22 +68,66 @@ const OrdersScreen = ({ navigation }) => {
 	};
 
 	useEffect(() => {
+		console.log('azef' + loadingOrderedDishs);
 		dispatch(getOrderedDishsByUser(user));
-		getTotal();
-	}, [user, loadingOrderedDishs]);
+		if (orderedDishsList != null) getTotal();
+		return () => {
+			setTotalPrice(0);
+		};
+	}, [loadingOrderedDishs]);
 
 	const header = (
 		<View style={{ marginTop: 24, paddingVertical: 16 }}>
+			<Modal
+				animationType='fade'
+				transparent={true}
+				visible={modalVisible}
+				onRequestClose={() => {
+					Alert.alert(setOrderedDish);
+					setModalVisible(!modalVisible);
+				}}
+			>
+				<View style={styles.centeredView}>
+					<View style={styles.modalView}>
+						<Text style={styles.modalText}>
+							<Text>Commande Validé!{'\n'}</Text>
+							<Text>Vous êtes le{'\n'}</Text>
+							<Text style={{ fontSize: 54, color: '#E53E3E' }}>
+								N°{count}
+								{'\n'}
+							</Text>
+							<Text> dans la liste</Text>
+						</Text>
+						<TouchableOpacity
+							style={[styles.button, styles.buttonClose]}
+							onPress={() => {
+								dispatch(resetUser());
+								setModalVisible(!modalVisible);
+							}}
+						>
+							<Text style={styles.textStyle}>Prendre Une Nouvelle Commande</Text>
+						</TouchableOpacity>
+					</View>
+				</View>
+			</Modal>
 			<Text style={headerTitle}>VOTRE PANIER</Text>
 		</View>
 	);
 
-	const footer = () => {
-		if (totalPrice != 0) {
+	const footer = (total) => {
+		if (total != 0) {
 			return (
-				<View style={{ flexDirection: 'row-reverse', alignItems: 'center', paddingVertical: 16 }}>
-					<Text style={{ fontSize: 28, fontWeight: 'bold', color: '#C53030' }}>{totalPrice + ' DA'}</Text>
-					<Text style={{ fontSize: 28 }}>Total: </Text>
+				<View style={{ justifyContent: 'space-between', flexDirection: 'row-reverse', marginVertical: 20 }}>
+					<TouchableOpacity
+						style={{ padding: 20, paddingHorizontal: 26, backgroundColor: '#38A169', borderRadius: 8 }}
+						onPress={() => validerCommande()}
+					>
+						<Text style={{ color: '#fff', fontSize: 20, fontWeight: 'bold' }}>Valider</Text>
+					</TouchableOpacity>
+					<View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 16 }}>
+						<Text style={{ fontSize: 28 }}>Total: </Text>
+						<Text style={{ fontSize: 28, fontWeight: 'bold', color: '#C53030' }}>{total + ' DA'}</Text>
+					</View>
 				</View>
 			);
 		} else {
@@ -61,7 +138,7 @@ const OrdersScreen = ({ navigation }) => {
 	return (
 		<FlatList
 			ListHeaderComponent={header}
-			ListFooterComponent={footer}
+			ListFooterComponent={footer(totalPrice)}
 			contentContainerStyle={flContainer}
 			ListEmptyComponent={() => {
 				if (orderedDishsList != null) {
@@ -82,5 +159,61 @@ const OrdersScreen = ({ navigation }) => {
 		/>
 	);
 };
+
+const styles = StyleSheet.create({
+	centeredView: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+	hideModal: {
+		width: '100%',
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+		backgroundColor: '#000',
+		opacity: 0.5,
+	},
+	modalView: {
+		position: 'absolute',
+		margin: 16,
+		backgroundColor: 'white',
+		borderRadius: 20,
+		padding: 10,
+		alignItems: 'center',
+		shadowColor: '#000',
+		shadowOffset: {
+			width: 0,
+			height: 2,
+		},
+		shadowOpacity: 0.25,
+		shadowRadius: 4,
+		elevation: 5,
+	},
+	button: {
+		borderRadius: 50,
+		padding: 20,
+		paddingHorizontal: 22,
+		width: Dimensions.get('window').width * 0.5,
+		elevation: 2,
+	},
+	buttonClose: {
+		backgroundColor: '#2196F3',
+	},
+	textStyle: {
+		color: 'white',
+		fontWeight: 'bold',
+		textAlign: 'center',
+		fontSize: 20,
+	},
+	modalText: {
+		padding: 24,
+		fontSize: 28,
+		fontWeight: 'bold',
+		color: '#38A169',
+		marginBottom: 15,
+		textAlign: 'center',
+	},
+});
 
 export default OrdersScreen;

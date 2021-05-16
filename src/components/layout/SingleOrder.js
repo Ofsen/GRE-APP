@@ -1,25 +1,25 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 // CSS
 import dishStyles from '../dishs/dishStyles';
 // Components
-import { View, Text, Image, Dimensions, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, Image, Dimensions, TouchableOpacity } from 'react-native';
 import Counter from './Counter';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import axios from 'axios';
 
+import { setLoading } from '../../actions/orderedDishsActions';
+
+import axios from 'axios';
 import apiUrl from '../../apiUrl';
 
-const SingleOrder = ({ item, setLoad }) => {
+const SingleOrder = ({ item }) => {
 	const { _id, option, quantity, userId, dish } = item;
-
 	const { price, name, img, desc } = dish;
-
 	const opLenght = option.length;
-
 	const { flexDRow } = dishStyles;
-
 	const [counter, setCounter] = useState(quantity);
+
+	const dispatch = useDispatch();
 
 	const increase = () => {
 		setCounter(counter + 1);
@@ -30,7 +30,7 @@ const SingleOrder = ({ item, setLoad }) => {
 				quantity: counter + 1,
 				userId: userId,
 			})
-			.then()
+			.then(() => dispatch(setLoading()))
 			.catch((err) => console.log(err));
 	};
 	const decrease = () => {
@@ -38,15 +38,14 @@ const SingleOrder = ({ item, setLoad }) => {
 			setCounter(counter - 1);
 			axios
 				.put(apiUrl + 'orderedDishs/update/' + _id, { ...item, quantity: counter - 1 })
-				.then()
+				.then(() => dispatch(setLoading()))
 				.catch((err) => console.log(err));
 		}
 	};
-
 	const deleteOrder = () => {
 		axios
 			.delete(apiUrl + 'orderedDishs/delete/' + _id)
-			.then()
+			.then(() => dispatch(setLoading()))
 			.catch((err) => console.log(err));
 	};
 
@@ -113,10 +112,6 @@ const SingleOrder = ({ item, setLoad }) => {
 			</View>
 		</View>
 	);
-};
-
-SingleOrder.protoTypes = {
-	item: PropTypes.object.isRequired,
 };
 
 export default SingleOrder;

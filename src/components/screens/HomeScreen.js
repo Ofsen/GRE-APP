@@ -30,6 +30,9 @@ const HomeScreen = ({ navigation }) => {
 				options={{
 					tabBarLabel: 'Panier',
 					tabBarIcon: ({ color, size }) => <FontAwesome name='shopping-basket' color={color} size={size} />,
+					cardStyle: {
+						backgroundColor: '#fff',
+					},
 				}}
 			/>
 		</Tab.Navigator>

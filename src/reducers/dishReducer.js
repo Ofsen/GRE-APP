@@ -5,7 +5,7 @@ import {
 	DISHS_ERROR,
 	SINGLE_DISH_ERROR,
 	GET_SINGLE_DISH,
-	RESET,
+	RESET_DISHS,
 	RESET_SINGLE,
 } from '../actions/types';
 
@@ -47,7 +47,7 @@ export default (state = initialState, action) => {
 				singleDish: null,
 				singleLoading: false,
 			};
-		case RESET: {
+		case RESET_DISHS: {
 			return initialState;
 		}
 		default:

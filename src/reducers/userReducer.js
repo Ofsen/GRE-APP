@@ -1,4 +1,4 @@
-import { SET_USER, USER_ERROR, RESET } from '../actions/types';
+import { SET_USER, USER_ERROR, RESET_USER } from '../actions/types';
 
 const initialState = {
 	userId: null,
@@ -17,7 +17,7 @@ export default (state = initialState, action) => {
 				...state,
 				error: action.payload,
 			};
-		case RESET: {
+		case RESET_USER: {
 			return initialState;
 		}
 		default:

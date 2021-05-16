@@ -1,5 +1,5 @@
 import { wcClient } from './wcApiConfig';
-import { SET_USER, USER_ERROR, RESET } from './types';
+import { SET_USER, USER_ERROR, RESET_USER } from './types';
 
 export const setUser = (newUserId) => async (dispatch) => {
 	try {
@@ -27,6 +27,6 @@ export const setUser = (newUserId) => async (dispatch) => {
 
 export const resetUser = () => (dispatch) => {
 	dispatch({
-		type: RESET,
+		type: RESET_USER,
 	});
 };
