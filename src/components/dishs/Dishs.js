@@ -19,12 +19,14 @@ const Dishs = ({ navigation }) => {
 
 	const handleRefresh = () => {
 		dispatch(reset());
-		dispatch(getDishs());
 	};
 
 	useEffect(() => {
 		dispatch(getDishs());
-	}, []);
+		return () => {
+			dispatch(reset());
+		};
+	}, [loadingDishs]);
 
 	const header = (
 		<View style={{ paddingBottom: 16 }}>

@@ -58,10 +58,7 @@ const DishSingle = ({
 	);
 
 	useEffect(() => {
-		if (!singleLoading) dispatch(getDishById(dishId));
-		return () => {
-			dispatch(resetSingle());
-		};
+		dispatch(getDishById(dishId));
 	}, [singleLoading, ingr]);
 
 	if (singleDish == null) {

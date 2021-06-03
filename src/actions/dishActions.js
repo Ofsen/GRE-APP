@@ -31,7 +31,7 @@ export const getDishs = () => async (dispatch) => {
 
 export const getDishById = (id) => async (dispatch) => {
 	try {
-		setSingleLoading();
+		resetSingle();
 
 		const res = await wcClient().get(`dishs/${id}`);
 

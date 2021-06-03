@@ -68,7 +68,6 @@ const OrdersScreen = ({ navigation }) => {
 	};
 
 	useEffect(() => {
-		console.log('azef' + loadingOrderedDishs);
 		dispatch(getOrderedDishsByUser(user));
 		if (orderedDishsList != null) getTotal();
 		return () => {
