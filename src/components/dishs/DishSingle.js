@@ -17,7 +17,6 @@ import {
 	Image,
 } from 'react-native';
 import BuyButton from '../layout/buyButton';
-import Check from '../layout/Check';
 import Counter from '../layout/Counter';
 // CSS
 import dishStyles from './dishStyles';
@@ -26,6 +25,8 @@ import { getDishById, resetSingle } from '../../actions/dishActions';
 import { setOrderedDishs, errorOrderedDishs, setLoading } from '../../actions/orderedDishsActions';
 
 import apiUrl from '../../apiUrl';
+
+import { TagSelect } from 'react-native-tag-select';
 
 const DishSingle = ({
 	route: {
@@ -48,32 +49,34 @@ const DishSingle = ({
 	useFocusEffect(
 		useCallback(() => {
 			// Do something when the screen is focused
+			dispatch(getDishById(dishId));
+
 			const parent = dangerouslyGetParent();
 			if (parent) parent.setOptions({ tabBarVisible: false });
+
 			return () => {
 				// Do something when the screen is unfocused
 				if (parent) parent.setOptions({ tabBarVisible: true });
+
+				dispatch(resetSingle());
 			};
-		}, [dangerouslyGetParent])
+		}, [dangerouslyGetParent, singleLoading, ingr])
 	);
+	const { contentContainer, buyContainer, flexOne, flexDRow, fontBold } = dishStyles;
 
-	useEffect(() => {
-		dispatch(getDishById(dishId));
-	}, [singleLoading, ingr]);
-
-	if (singleDish == null) {
-		return (
-			<View style={dishStyles.flexOne}>
-				<ActivityIndicator style={{ flex: 6 }} size='large' color='#E53E3E' />
-			</View>
-		);
-	} else {
+	if (singleDish !== null) {
 		const { name, img, desc, price, category } = singleDish;
-		const { contentContainer, buyContainer, flexOne, flexDRow, fontBold } = dishStyles;
 
-		let ing = [...desc.optional];
-		ing.map((item) => {
+		let mainIng = [...desc.main];
+		mainIng = mainIng.map((item, index) => {
 			item.selected = true;
+			return { ...item, id: index + 1 };
+		});
+
+		let optIng = [...desc.optional];
+		optIng = optIng.map((item, index) => {
+			item.selected = true;
+			return { ...item, id: index + 1 };
 		});
 
 		const buy = () => {
@@ -91,7 +94,7 @@ const DishSingle = ({
 			}
 		};
 
-		if (ingr.length == 0) setIngr(ing);
+		if (ingr.length == 0) setIngr(optIng);
 
 		return (
 			<View style={flexOne}>
@@ -163,19 +166,27 @@ const DishSingle = ({
 							{'Ingrédients'.toUpperCase()}
 						</Text>
 						<View style={[flexDRow, { alignItems: 'center', flexWrap: 'wrap' }]}>
-							{desc.main.map((item, i) => (
-								<Check key={i} name={item.name} disabl={true} selected={true} />
-							))}
-							{ingr.map((item, i) => (
-								<Check
-									key={i}
-									name={item.name}
-									selected={item.selected}
-									disabl={false}
-									toggl={ingr}
-									setToggl={setIngr}
-								/>
-							))}
+							<TagSelect
+								data={mainIng}
+								value={[{ selected: true }]}
+								labelAttr={'name'}
+								itemStyle={styles.item}
+								itemLabelStyle={styles.label}
+								itemStyleSelected={styles.mainItemSelected}
+								itemLabelStyleSelected={styles.labelSelected}
+							/>
+							<TagSelect
+								data={ingr}
+								value={ingr}
+								labelAttr={'name'}
+								itemStyle={styles.item}
+								itemLabelStyle={styles.label}
+								itemStyleSelected={styles.itemSelected}
+								itemLabelStyleSelected={styles.labelSelected}
+								onItemPress={(itm) => {
+									itm.selected = !itm.selected;
+								}}
+							/>
 						</View>
 					</View>
 				</ScrollView>
@@ -186,6 +197,12 @@ const DishSingle = ({
 			</View>
 		);
 	}
+
+	return (
+		<View style={dishStyles.flexOne}>
+			<ActivityIndicator style={{ flex: 6 }} size='large' color='#E53E3E' />
+		</View>
+	);
 };
 
 DishSingle.propTypes = {
@@ -193,6 +210,32 @@ DishSingle.propTypes = {
 };
 
 const styles = StyleSheet.create({
+	item: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		backgroundColor: '#EDF2F7',
+		paddingVertical: 18,
+		paddingHorizontal: 24,
+		borderRadius: 30,
+		marginVertical: 5,
+		borderWidth: 0,
+	},
+	label: {
+		fontSize: 20,
+		marginBottom: 2,
+		fontWeight: 'bold',
+	},
+	itemSelected: {
+		backgroundColor: '#48BB78',
+		borderWidth: 0,
+	},
+	mainItemSelected: {
+		backgroundColor: '#68D391',
+		borderWidth: 0,
+	},
+	labelSelected: {
+		color: '#FFF',
+	},
 	centeredView: {
 		flex: 1,
 		justifyContent: 'center',

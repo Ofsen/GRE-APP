@@ -4,12 +4,11 @@ import {
 	View,
 	FlatList,
 	RefreshControl,
-	ActivityIndicator,
+	ScrollView,
 	Modal,
 	StyleSheet,
 	Dimensions,
 	TouchableOpacity,
-	StatusBar,
 } from 'react-native';
 // Redux
 import { useSelector, useDispatch } from 'react-redux';
@@ -26,7 +25,7 @@ import apiUrl from '../../apiUrl';
 
 const OrdersScreen = ({ navigation }) => {
 	// Specific styles
-	const { headerTitle, flContainer } = dishStyles;
+	const { headerTitle } = dishStyles;
 	const dispatch = useDispatch();
 
 	const [totalPrice, setTotalPrice] = useState(0);
@@ -69,97 +68,104 @@ const OrdersScreen = ({ navigation }) => {
 
 	useEffect(() => {
 		dispatch(getOrderedDishsByUser(user));
-		if (orderedDishsList != null) getTotal();
+		getTotal();
 		return () => {
 			setTotalPrice(0);
 		};
 	}, [loadingOrderedDishs]);
 
-	const header = (
-		<View style={{ marginTop: 24, paddingVertical: 16 }}>
-			<Modal
-				animationType='fade'
-				transparent={true}
-				visible={modalVisible}
-				onRequestClose={() => {
-					Alert.alert(setOrderedDish);
-					setModalVisible(!modalVisible);
-				}}
-			>
-				<View style={styles.centeredView}>
-					<View style={styles.modalView}>
-						<Text style={styles.modalText}>
-							<Text>Commande Validé!{'\n'}</Text>
-							<Text>Vous êtes le{'\n'}</Text>
-							<Text style={{ fontSize: 54, color: '#E53E3E' }}>
-								N°{count}
-								{'\n'}
-							</Text>
-							<Text> dans la liste</Text>
-						</Text>
-						<TouchableOpacity
-							style={[styles.button, styles.buttonClose]}
-							onPress={() => {
-								dispatch(resetUser());
-								setModalVisible(!modalVisible);
-							}}
-						>
-							<Text style={styles.textStyle}>Prendre Une Nouvelle Commande</Text>
-						</TouchableOpacity>
-					</View>
-				</View>
-			</Modal>
-			<Text style={headerTitle}>VOTRE PANIER</Text>
-		</View>
-	);
-
 	const footer = (total) => {
-		if (total != 0) {
-			return (
-				<View style={{ justifyContent: 'space-between', flexDirection: 'row-reverse', marginVertical: 20 }}>
+		return (
+			<View style={{ justifyContent: 'space-between', flexDirection: 'row-reverse', marginVertical: 20 }}>
+				{total !== 0 ? (
 					<TouchableOpacity
 						style={{ padding: 20, paddingHorizontal: 26, backgroundColor: '#38A169', borderRadius: 8 }}
 						onPress={() => validerCommande()}
 					>
 						<Text style={{ color: '#fff', fontSize: 20, fontWeight: 'bold' }}>Valider</Text>
 					</TouchableOpacity>
-					<View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 16 }}>
-						<Text style={{ fontSize: 28 }}>Total: </Text>
-						<Text style={{ fontSize: 28, fontWeight: 'bold', color: '#C53030' }}>{total + ' DA'}</Text>
-					</View>
+				) : (
+					<Text>''</Text>
+				)}
+				<View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 16 }}>
+					<Text style={{ fontSize: 28 }}>Total: </Text>
+					<Text style={{ fontSize: 28, fontWeight: 'bold', color: '#C53030' }}>{total + ' DA'}</Text>
 				</View>
-			);
-		} else {
-			return <></>;
-		}
+			</View>
+		);
 	};
 
-	return (
-		<FlatList
-			ListHeaderComponent={header}
-			ListFooterComponent={footer(totalPrice)}
-			contentContainerStyle={flContainer}
-			ListEmptyComponent={() => {
-				if (orderedDishsList != null) {
-					return (
-						<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-							<Text style={{ fontSize: 16 }}>Votre panier est vide.</Text>
+	const header = () => {
+		return (
+			<View style={{ marginTop: 24, paddingVertical: 16, backgroundColor: '#fff' }}>
+				<Modal
+					animationType='fade'
+					transparent={true}
+					visible={modalVisible}
+					onRequestClose={() => {
+						Alert.alert(setOrderedDish);
+						setModalVisible(!modalVisible);
+					}}
+				>
+					<View style={styles.centeredView}>
+						<View style={styles.modalView}>
+							<Text style={styles.modalText}>
+								<Text>Commande Validé!{'\n'}</Text>
+								<Text>Vous êtes le{'\n'}</Text>
+								<Text style={{ fontSize: 54, color: '#E53E3E' }}>
+									N°{count}
+									{'\n'}
+								</Text>
+								<Text> dans la liste</Text>
+							</Text>
+							<TouchableOpacity
+								style={[styles.button, styles.buttonClose]}
+								onPress={() => {
+									dispatch(resetUser());
+									setModalVisible(!modalVisible);
+								}}
+							>
+								<Text style={styles.textStyle}>Prendre Une Nouvelle Commande</Text>
+							</TouchableOpacity>
 						</View>
-					);
-				} else {
-					return <ActivityIndicator style={{ flex: 1 }} size='large' color='#E53E3E' />;
-				}
+					</View>
+				</Modal>
+				<Text style={headerTitle}>VOTRE PANIER</Text>
+			</View>
+		);
+	};
+
+	return orderedDishsList === null || orderedDishsList.length === 0 ? (
+		<View
+			style={{
+				flexGrow: 1,
+				justifyContent: 'center',
+				alignItems: 'center',
+				paddingHorizontal: 20,
+				backgroundColor: '#fff',
 			}}
-			numColumns={1}
-			keyExtractor={(item, index) => index.toString()}
-			data={orderedDishsList}
-			renderItem={({ item, i }) => <SingleOrder key={i} item={item} />}
-			refreshControl={<RefreshControl refreshing={loadingOrderedDishs} onRefresh={handleRefresh} colors={['#E53E3E']} />}
-		/>
+		>
+			<Text style={headerTitle}>VOTRE PANIER EST VIDE!</Text>
+			<Text>Ajoutez des commandes afin de remplire votre panier.</Text>
+		</View>
+	) : (
+		<View style={styles.container}>
+			<ScrollView contentContainerStyle={{ paddingHorizontal: 20 }} stickyHeaderIndices={[0]}>
+				{header()}
+				{orderedDishsList.map((item, i) => (
+					<SingleOrder key={i} item={item} />
+				))}
+				{footer(totalPrice)}
+			</ScrollView>
+		</View>
 	);
 };
 
 const styles = StyleSheet.create({
+	container: {
+		flexGrow: 1,
+		backgroundColor: '#fff',
+	},
 	centeredView: {
 		flex: 1,
 		justifyContent: 'center',

@@ -5392,6 +5392,13 @@ react-native-screens@~2.15.2:
   resolved "https://registry.npmjs.org/react-native-screens/-/react-native-screens-2.15.2.tgz"
   integrity sha512-CagNf2APXkVoRlF3Mugr264FbKbrBg9eXUkqhIPVeZB8EsdS8XPrnt99yj/pzmT+yJMBY0dGrjXT8+68WYh6YQ==
 
+react-native-tag-select@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-tag-select/-/react-native-tag-select-2.0.0.tgz#b02766526a5b2663a3392478dc500616f019cbf1"
+  integrity sha512-ys0A2MKZ8CLQ6QYBnnuyg1/MIsNVmRSSJpPFD3E+tTR4FTaLYNRiTIaBy1Wy77feBaYeDfN7UG2K5jr31+Iq0A==
+  dependencies:
+    prop-types "^15.6.0"
+
 react-native-web@~0.13.12:
   version "0.13.18"
   resolved "https://registry.npmjs.org/react-native-web/-/react-native-web-0.13.18.tgz"
