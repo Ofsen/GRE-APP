@@ -12,6 +12,7 @@ const Stack = createStackNavigator();
 
 const AppScreen = () => {
 	const userId = useSelector((state) => state.user.userId);
+	const order = useSelector((state) => state.order);
 
 	return (
 		<NavigationContainer>
