@@ -10,7 +10,7 @@ import {
 } from '../actions/types';
 
 const initialState = {
-	dishs: null,
+	dishs: [],
 	singleDish: null,
 	loadingDishs: false,
 	singleLoading: false,

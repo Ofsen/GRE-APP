@@ -11,11 +11,12 @@ import {
 } from './types';
 
 // Get products
-export const getDishs = () => async (dispatch) => {
+export const getDishs = (catId) => async (dispatch) => {
 	try {
 		setLoading();
 
-		const res = await wcClient().get('dishs/');
+		var res;
+		catId === '' ? (res = await wcClient().get('dishs/')) : (res = await wcClient().get('dishs/byCat/' + catId));
 
 		dispatch({
 			type: GET_DISHS,
@@ -31,7 +32,7 @@ export const getDishs = () => async (dispatch) => {
 
 export const getDishById = (id) => async (dispatch) => {
 	try {
-		resetSingle();
+		dispatch(resetSingle());
 
 		const res = await wcClient().get(`dishs/${id}`);
 
@@ -48,16 +49,16 @@ export const getDishById = (id) => async (dispatch) => {
 };
 
 // Set loading to true
-export const setSingleLoading = () => {
-	return {
+export const setSingleLoading = () => (dispatch) => {
+	dispatch({
 		type: SET_SINGLE_LOADING,
-	};
+	});
 };
 // Set loading to true
-export const setLoading = () => {
-	return {
+export const setLoading = () => (dispatch) => {
+	dispatch({
 		type: SET_LOADING,
-	};
+	});
 };
 
 export const resetSingle = () => (dispatch) => {

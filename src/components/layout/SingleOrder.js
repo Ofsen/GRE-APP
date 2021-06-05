@@ -13,7 +13,6 @@ import axios from 'axios';
 import apiUrl from '../../apiUrl';
 
 const SingleOrder = ({ item }) => {
-	console.log(item);
 	const { _id, option, quantity, userId, dish } = item;
 	const { price, name, img, desc } = dish;
 	const opLenght = option.length;

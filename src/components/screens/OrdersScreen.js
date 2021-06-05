@@ -13,7 +13,7 @@ import {
 // Redux
 import { useSelector, useDispatch } from 'react-redux';
 // Actions
-import { getOrderedDishsByUser, resetOrderedDishs } from '../../actions/orderedDishsActions';
+import { getOrderedDishsByUser } from '../../actions/orderedDishsActions';
 // CSS
 import dishStyles from '../dishs/dishStyles';
 // Components
@@ -23,7 +23,7 @@ import { resetUser } from '../../actions/userActions';
 import axios from 'axios';
 import apiUrl from '../../apiUrl';
 
-const OrdersScreen = ({ navigation }) => {
+const OrdersScreen = () => {
 	// Specific styles
 	const { headerTitle } = dishStyles;
 	const dispatch = useDispatch();
@@ -36,11 +36,6 @@ const OrdersScreen = ({ navigation }) => {
 
 	const [modalVisible, setModalVisible] = useState(false);
 	const [count, setCount] = useState(0);
-
-	const handleRefresh = () => {
-		dispatch(resetOrderedDishs());
-		dispatch(getOrderedDishsByUser(user));
-	};
 
 	const validerCommande = () => {
 		if (count === 0)
@@ -67,12 +62,9 @@ const OrdersScreen = ({ navigation }) => {
 	};
 
 	useEffect(() => {
-		dispatch(getOrderedDishsByUser(user));
 		getTotal();
-		return () => {
-			setTotalPrice(0);
-		};
-	}, [loadingOrderedDishs]);
+		dispatch(getOrderedDishsByUser(user));
+	}, [loadingOrderedDishs, orderedDishsList]);
 
 	const footer = (total) => {
 		return (
@@ -85,7 +77,7 @@ const OrdersScreen = ({ navigation }) => {
 						<Text style={{ color: '#fff', fontSize: 20, fontWeight: 'bold' }}>Valider</Text>
 					</TouchableOpacity>
 				) : (
-					<Text>''</Text>
+					<Text> </Text>
 				)}
 				<View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 16 }}>
 					<Text style={{ fontSize: 28 }}>Total: </Text>
